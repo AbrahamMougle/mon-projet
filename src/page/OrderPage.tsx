@@ -102,10 +102,6 @@ export default function OrdersPage() {
               className="w-full pl-10 pr-4 py-2 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground placeholder:italic"
             />
           </div>
-          <Button variant="outline" className="gap-2 sm:w-auto bg-transparent">
-            <Filter className="h-4 w-4" />
-            Filtres
-          </Button>
         </div>
 
         <div className="flex flex-wrap gap-2">
