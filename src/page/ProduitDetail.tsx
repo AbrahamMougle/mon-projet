@@ -1,36 +1,56 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Star, Heart, Share2, ShoppingCart, Minus, Plus, Truck, Shield, RotateCcw } from "lucide-react"
+import { useParams } from "react-router-dom"
+import fetchData from "@/lib/fetchData"
+import { log } from "console"
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  similarImages: string[];
+  description?: string;
+  category?: string;
+}
+
+function Module({ node, texte }: { node: React.ReactNode, texte: string }) {
+  return <div className="flex items-center space-x-3">
+    {node}
+    <span className="text-sm"> {texte} </span>
+  </div>
+
+}
 
 export function ProductDetailPage() {
+  const { id } = useParams()
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)// mon store va gerer la quantite
+  const [loader, setLoader] = useState(true)
+  const [productDetail, setProductDetail] = useState<Product>({} as Product);
   const [selectedSize, setSelectedSize] = useState("M")
   const [isWishlisted, setIsWishlisted] = useState(false)
-
-  const productImages = [
-    "/modern-wireless-headphones-front-view.jpg",
-    "/modern-wireless-headphones-side-view.jpg",
-    "/placeholder-u8o12.png",
-    "/placeholder-durna.png",
-  ]
-
+  const productImages = productDetail.similarImages
   const sizes = ["S", "M", "L", "XL"]
+ 
+  
+  useEffect(() => {
+  const datapProduct = async () => {
+    const product = await fetchData(`/api/products/${id}`)
+    setProductDetail(product)
+    setLoader(false)
+  };
 
-  const reviews = [
-    { name: "Marie Dubois", rating: 5, comment: "Qualité exceptionnelle, son cristallin et design élégant." },
-    { name: "Pierre Martin", rating: 4, comment: "Très bon produit, confortable pour de longues sessions." },
-    { name: "Sophie Laurent", rating: 5, comment: "Dépassé mes attentes, la réduction de bruit est parfaite." },
-  ]
+    datapProduct()
+ 
+}, []);
 
-  const relatedProducts = [
-    { name: "Casque Pro Max", price: "299€", image: "/professional-headphones.jpg" },
-    { name: "Écouteurs Sport", price: "149€", image: "/placeholder-8r702.png" },
-    { name: "Station de Charge", price: "79€", image: "/charging-station.jpg" },
-  ]
+if (loader) {
+  return <div>Loading...</div>
+}
 
   return (
     <div className="min-h-screen bg-background">
@@ -40,19 +60,18 @@ export function ProductDetailPage() {
           <div className="space-y-4">
             <div className="aspect-square overflow-hidden rounded-lg bg-muted">
               <img
-                src={productImages[selectedImage] || "/placeholder.svg"}// image 1 image 2 image 3 image4 
+                src={productDetail?.similarImages[selectedImage] || "/placeholder.svg"}// image 1 image 2 image 3 image4 productImages[selectedImage]
                 alt="Casque Audio Premium"
                 className="h-full w-full object-cover transition-transform hover:scale-105"
               />
             </div>
             <div className="grid grid-cols-4 gap-4">
-              {productImages.map((image, index) => (
+              {productDetail?.similarImages.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}// permet de charger les image 1 2 3 4
-                  className={`aspect-square overflow-hidden rounded-lg border-2 transition-colors ${
-                    selectedImage === index ? "border-primary" : "border-border"
-                  }`}
+                  className={`aspect-square overflow-hidden rounded-lg border-2 transition-colors ${selectedImage === index ? "border-primary" : "border-border"
+                    }`}
                 >
                   <img
                     src={image || "/placeholder.svg"}
@@ -68,11 +87,11 @@ export function ProductDetailPage() {
           <div className="space-y-6">
             <div>
               <Badge variant="secondary" className="mb-2">
-                Nouveau
+                {productDetail.category}
               </Badge>
-              <h1 className="text-3xl font-bold text-balance">Casque Audio Premium Pro</h1>
+              <h1 className="text-3xl font-bold text-balance"> {productDetail.name} </h1>
               <p className="text-lg text-muted-foreground mt-2">
-                Expérience audio immersive avec réduction de bruit active
+                {productDetail.description}
               </p>
             </div>
 
@@ -186,50 +205,6 @@ export function ProductDetailPage() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Reviews */}
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-bold mb-6">Avis clients</h2>
-              <div className="space-y-6">
-                {reviews.map((review, index) => (
-                  <div key={index} className="border-b pb-4 last:border-b-0">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-semibold">{review.name}</h4>
-                      <div className="flex">
-                        {[...Array(review.rating)].map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-muted-foreground text-pretty">{review.comment}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Related Products */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Produits similaires</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedProducts.map((product, index) => (
-                <Card key={index} className="group cursor-pointer hover:shadow-lg transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="aspect-square overflow-hidden rounded-lg bg-muted mb-4">
-                      <img
-                        src={product.image || "/placeholder.svg"}
-                        alt={product.name}
-                        className="h-full w-full object-cover group-hover:scale-105 transition-transform"
-                      />
-                    </div>
-                    <h3 className="font-semibold mb-2">{product.name}</h3>
-                    <p className="text-lg font-bold text-primary">{product.price}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>
