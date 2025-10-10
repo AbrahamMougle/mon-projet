@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import { useStore } from "../store/store"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -55,10 +56,13 @@ export default function OrdersPage() {
   const orders = useStore((s) => s.orders) as  OrderWithStatus[]
 
   const [selectedStatus, setSelectedStatus] = useState<OrderStatus | "all">("all")
-  const [searchQuery, setSearchQuery] = useState("") 
+  const [searchQuery, setSearchQuery] = useState("") // '' montre que searchQuery est un string mais rien n'est ecrit
+  /* filtered permet de filtrer mes elements suivants le statut et suivant searchQuery
+   Au premier rendu matchesStatus matchesSearch sont true
+   */
   const filteredOrders = orders.filter((order) => {
     const matchesStatus = selectedStatus === "all" || order.status === selectedStatus
-    const matchesSearch = order.id.toString().includes(searchQuery) || order.user.name.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesSearch = order.id.toString().includes(searchQuery) 
     return matchesStatus && matchesSearch
   })
 
@@ -75,7 +79,7 @@ export default function OrdersPage() {
         </p>
         <Button size="lg" className="gap-2">
           <ShoppingBag className="h-4 w-4" />
-          Découvrir les produits
+          <Link to='/product'>Découvrir les produits</Link>
         </Button>
       </div>
     )
@@ -93,10 +97,10 @@ export default function OrdersPage() {
       <div className="mb-6 space-y-4">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Rechercher par numéro ou nom..."
+              placeholder="Rechercher par numéro de..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground placeholder:italic"
@@ -144,19 +148,7 @@ export default function OrdersPage() {
                 key={order.id}
                 className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-border overflow-hidden"
               >
-                <div
-                  className={`h-1 ${
-                    order.status === "delivered"
-                      ? "bg-chart-1"
-                      : order.status === "shipped"
-                        ? "bg-chart-2"
-                        : order.status === "processing"
-                          ? "bg-chart-4"
-                          : order.status === "cancelled"
-                            ? "bg-destructive"
-                            : "bg-muted"
-                  }`}
-                />
+                
 
                 <CardHeader className="pb-3">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">

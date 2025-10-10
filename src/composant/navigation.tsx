@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom"
-import { Menu, ShoppingCart, Store } from "lucide-react"
+import { Menu, ShoppingCart, Store ,User} from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { StyledNavLink } from "./styleNavLink"
+
 
 interface NavigationProps {
   cartItemsCount?: number
@@ -24,14 +25,16 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
         </StyledNavLink>
 
         {/* Liens Desktop */}
-        <div className="hidden md:flex gap-1 text-sm font-medium">
+        <div className="hidden md:flex justify-center items-center gap-3 text-sm font-medium">
          
           <StyledNavLink to="/product">Produits</StyledNavLink>
           <StyledNavLink to="/orders">Commandes</StyledNavLink>
         </div>
 
         {/* Icônes & Menu Mobile */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center gap-8">
+                    <StyledNavLink to="/connecte"><User className="h-6 w-6 group-hover:scale-110 transition-transform" /></StyledNavLink>
+
           {/* Panier */}
           <Button
             variant="ghost"
@@ -41,11 +44,10 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
             aria-label={`Panier avec ${cartItemsCount} article${cartItemsCount > 1 ? "s" : ""}`}
           >
             <StyledNavLink to="/panier">
-              <ShoppingCart className="h-5 w-5" />
+              <ShoppingCart className="h-6 w-6" />
               {cartItemsCount > 0 && (
                 <Badge
-                  variant="destructive"
-                  className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                  className=" absolute top-4  h-4 w-4 flex items-center justify-center p-0 text-xs"
                 >
                   {cartItemsCount > 9 ? "9+" : cartItemsCount}
                 </Badge>

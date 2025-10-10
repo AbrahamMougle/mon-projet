@@ -6,7 +6,8 @@ import { Separator } from "@/components/ui/separator"
 import { Star, Heart, Share2, ShoppingCart, Minus, Plus, Truck, Shield, RotateCcw } from "lucide-react"
 import { useParams } from "react-router-dom"
 import fetchData from "@/lib/fetchData"
-import { log } from "console"
+import { useStore } from "../store/store"
+// cartItem id name price quantite
 type Product = {
   id: number;
   name: string;
@@ -17,40 +18,41 @@ type Product = {
   category?: string;
 }
 
-function Module({ node, texte }: { node: React.ReactNode, texte: string }) {
-  return <div className="flex items-center space-x-3">
-    {node}
-    <span className="text-sm"> {texte} </span>
-  </div>
 
-}
 
 export function ProductDetailPage() {
   const { id } = useParams()
   const [selectedImage, setSelectedImage] = useState(0)
-  const [quantity, setQuantity] = useState(1)// mon store va gerer la quantite
+  const [quantity, setQuantity] = useState(1)
   const [loader, setLoader] = useState(true)
   const [productDetail, setProductDetail] = useState<Product>({} as Product);
   const [selectedSize, setSelectedSize] = useState("M")
   const [isWishlisted, setIsWishlisted] = useState(false)
-  const productImages = productDetail.similarImages
+
+  const { addToCart } = useStore()
+
   const sizes = ["S", "M", "L", "XL"]
- 
-  
+  function handleClickAddCart() {
+    addToCart({ ...productDetail }, quantity)
+    setQuantity(1)
+
+  }
+
+
   useEffect(() => {
-  const datapProduct = async () => {
-    const product = await fetchData(`/api/products/${id}`)
-    setProductDetail(product)
-    setLoader(false)
-  };
+    const dataProduct = async () => {
+      const product = await fetchData(`/api/products/${id}`)
+      setProductDetail(product)
+      setLoader(false)
+    };
 
-    datapProduct()
- 
-}, []);
+    dataProduct()
 
-if (loader) {
-  return <div>Loading...</div>
-}
+  }, []);
+
+  if (loader) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -132,7 +134,8 @@ if (loader) {
             <div className="space-y-3">
               <h3 className="font-semibold">Quantité</h3>
               <div className="flex items-center space-x-3">
-                <Button variant="outline" size="icon" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+                <Button variant="outline" size="icon" disabled={quantity <= 1}
+                  className={quantity <= 1 ? "opacity-50 cursor-not-allowed" : ""} onClick={() => setQuantity(Math.max(1, quantity - 1))}>
                   <Minus className="h-4 w-4" />
                 </Button>
                 <span className="w-12 text-center font-semibold">{quantity}</span>
@@ -144,7 +147,7 @@ if (loader) {
 
             {/* Action Buttons */}
             <div className="space-y-3">
-              <Button size="lg" className="w-full">
+              <Button size="lg" className="w-full" onClick={() => handleClickAddCart()}>
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Ajouter au panier
               </Button>

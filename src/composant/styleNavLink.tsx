@@ -8,10 +8,10 @@ export function StyledNavLink({ to, children }: { to: string; children:ReactNode
       to={to}
       className={({ isActive }) =>
         cn(
-          "px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300",
+          " rounded-md text-sm font-medium",
          
           isActive
-            ? " text-primary text-lg shadow-md"
+            ? " text-primary  text-lg shadow-md"
             : "text-black"
         )
       }
