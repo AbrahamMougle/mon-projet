@@ -19,9 +19,7 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
           to="/"
         >
           <Store className="h-6 w-6 group-hover:scale-110 transition-transform" />
-          <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
-            E-Shop
-          </span>
+          
         </StyledNavLink>
 
         {/* Liens Desktop */}

@@ -4,13 +4,7 @@ import './index.css'
 import App from './App'
 import { makeServer } from './Api/server'
 import { Toaster } from "@/components/ui/sonner"
-
-
-
-if (import.meta.env.DEV) {
-  makeServer();
-}
-
+makeServer();
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
