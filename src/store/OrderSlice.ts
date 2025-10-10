@@ -21,29 +21,31 @@ export interface Order {
 export interface OrderSlice {
   orders: Order[];
   createOrder: (cart: CartItem[], user: UserInfo) => void;
-  
+  clearOrder: () => void
+
 }
 
-export const createOrderSlice: StateCreator<OrderSlice> =(set, get) => ({
-      orders: [],
-      createOrder: (cart, user) => {
-        const total = cart.reduce(
-          (sum, item) => sum + item.price * item.quantity,
-          0
-        );
+export const createOrderSlice: StateCreator<OrderSlice> = (set, get) => ({
+  orders: [],
+  createOrder: (cart, user) => {
+    const total = cart.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
 
-        const newOrder: Order = {
-          id: Date.now().toString(),
-          items: cart,
-          total:total,
-          user:user,
-          date: new Date().toLocaleString(),
-          status:'pending',
-          
-        };
+    const newOrder: Order = {
+      id: Date.now().toString(),
+      items: cart,
+      total: total,
+      user: user,
+      date: new Date().toLocaleString(),
+      status: 'pending',
 
-        set({ orders: [...get().orders, newOrder] });
-      },
+    };
 
-      
-    })
+    set({ orders: [...get().orders, newOrder] });
+  },
+  clearOrder: () => {
+    set({ orders: [] })
+  }
+})
