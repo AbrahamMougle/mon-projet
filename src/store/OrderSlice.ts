@@ -21,7 +21,7 @@ export interface Order {
 export interface OrderSlice {
   orders: Order[];
   createOrder: (cart: CartItem[], user: UserInfo) => void;
-  setOrders: (orders: Order[]) => void;
+  
 }
 
 export const createOrderSlice: StateCreator<OrderSlice> =(set, get) => ({
@@ -45,5 +45,5 @@ export const createOrderSlice: StateCreator<OrderSlice> =(set, get) => ({
         set({ orders: [...get().orders, newOrder] });
       },
 
-      setOrders: (orders) => set({ orders }),
+      
     })
