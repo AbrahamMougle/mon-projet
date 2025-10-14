@@ -1,13 +1,10 @@
 import { ProductDetailPage } from "@/page/ProduitDetail";
 import Navbar from "../composant/navBar";
-import CartPage from "../page/cartPage";
-import  ProductListPage from "../page/home";
 import OrdersPage from "../page/OrderPage";
-import { TechHero } from "@/composant/techHero";
-import { ProductCategories } from "@/composant/productCategory";
+import CartPage from "../page/panier";
 import HomePage from "@/page/homePage";
 import { LoginForm } from "@/page/form";
-
+import ProductListPage from "@/page/ProductList";
 export  const routesApp=[
   {
     path: "/",

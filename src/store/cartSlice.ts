@@ -21,18 +21,15 @@ export const createCartSlice: StateCreator<
   cart: [],
 
   addToCart: (item, qty = 1) =>
-    set((state) => {
+    set(() => {
       
-      return { cart: [...state.cart, { ...item, quantity: qty }] };
+      return { cart: [...get().cart, { ...item, quantity: qty }] };
     }, false),
 
   removeFromCart: (id) =>
     set((state) => ({
       cart: state.cart.filter((p) => p.id !== id),
     }), false),
-
- 
-
 
   clearCart: () => set(() => ({ cart: [] }), false),//pas encore utiliser 
 
