@@ -4,7 +4,8 @@ import { createCartSlice } from "./cartSlice";
 import { createOrderSlice} from "./OrderSlice";
 import type { OrderSlice } from "./OrderSlice";
 import type { CartSlice } from "./cartSlice";
-type Store = CartSlice& OrderSlice; 
+import { createUserSlice, type UserSlice } from "./UserSlice";
+type Store = CartSlice&OrderSlice&UserSlice; 
 
 export const useStore = create<Store>()(
   devtools(
@@ -12,6 +13,7 @@ export const useStore = create<Store>()(
       (set,get,api) => ({
         ...createOrderSlice(set,get,api),
         ...createCartSlice(set,get,api),
+        ...createUserSlice(set,get,api)
       }),
       { name: "ecommerce-cart" } // clé localStorage
     )

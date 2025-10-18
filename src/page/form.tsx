@@ -1,15 +1,13 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { FORMERR } from "node:dns/promises"
 import { Link } from "react-router-dom"
 import { Form } from "react-router-dom"
 import { useNavigation } from "react-router-dom"
 import { cn } from "@/lib/utils"
 export function LoginForm() {
     const { state } = useNavigation()
-    console.log(state)
-
+    
     return (
         <div className="flex items-center justify-center bg-background px-4 py-12">
             <div className="w-full max-w-md">
@@ -53,6 +51,7 @@ export function LoginForm() {
                             disabled={state === "submitting"}
                             className={cn("w-full", state === "submitting" && "opacity-50 cursor-not-allowed")}
                             size="lg"
+                            
                         >
                             Connecter
                         </Button>

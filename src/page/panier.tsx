@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 import { toast } from "sonner"
-
 export default function CartPage() {
+
   const { cart, clearCart, cartTotal, createOrder, removeFromCart } = useStore()
 
   const handleCreateOrder = () => {

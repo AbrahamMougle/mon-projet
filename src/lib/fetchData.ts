@@ -1,9 +1,9 @@
-export default async function fetchData(routeApi:string) {
-   const res= await fetch(routeApi)
-   if (!res.ok) {
-      throw new Error('une erreur est survenir lors appel Api')
-   }
-   const resJson= await res.json()
-   
-   return resJson.product    
+// utils/fetchData.ts
+export default async function fetchData<T>(routeApi: string): Promise<T> {
+  const res = await fetch(routeApi);
+  if (!res.ok) {
+    throw new Error('Une erreur est survenue lors de l’appel API');
+  }
+  const response=await res.json()
+  return response as T;
 }

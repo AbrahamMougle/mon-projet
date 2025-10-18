@@ -5,16 +5,28 @@ import CartPage from "../page/panier";
 import HomePage from "@/page/homePage";
 import { LoginForm } from "@/page/form";
 import ProductListPage from "@/page/ProductList";
+import { productLoader } from "@/page/ProductList";
+import { dataFromLoader } from "@/page/ProduitDetail";
+import { redirect } from "react-router-dom";
+function fecthBebore() {
+ let auth=true
+ if (!auth) {
+  throw redirect('/connecte')
+ }
+  
+}
+
 export  const routesApp=[
   {
     path: "/",
     element: <Navbar/>,/*ce que les composant partage en commun*/
-    errorElement: <h1>texte</h1>,
+    
     children: [
-      { index: true, element:<HomePage/>},// la ge par defaut lorsquue l'utilisateur sera sur /
-      { path: "product", element:< ProductListPage/>},
-      { path: "product/:id", element:<ProductDetailPage/>},
-      { path: "detail", element:<ProductDetailPage/>},
+      { index: true, element:<HomePage/>,loader:()=>fecthBebore()
+      },// large par defaut lorsquue l'utilisateur sera sur /
+      { path: "product", element:< ProductListPage/>,loader:productLoader},
+      { path: "product/:id", element:<ProductDetailPage/>,loader:({params}:{params:{id:string}})=>dataFromLoader(params.id)
+      },
       { path: "orders", element:<OrdersPage/>},
       { path: "panier", element:<CartPage/>},
       { path: "connecte", element:<LoginForm/>},

@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { StyledNavLink } from "./styleNavLink"
+import { ModeToggle } from "@/buttonToggleDark"
 
 
 interface NavigationProps {
@@ -21,20 +22,19 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
           <Store className="h-6 w-6 group-hover:scale-110 transition-transform" />
           
         </StyledNavLink>
-
         {/* Liens Desktop */}
         <div className="hidden md:flex justify-center items-center gap-3 text-sm font-medium">
-         
           <StyledNavLink to="/product">Produits</StyledNavLink>
           <StyledNavLink to="/orders">Commandes</StyledNavLink>
         </div>
-
         {/* Icônes & Menu Mobile */}
         <div className="flex items-center justify-center gap-8">
-                    <StyledNavLink to="/connecte"><User className="h-6 w-6 group-hover:scale-110 transition-transform" /></StyledNavLink>
+
+        <StyledNavLink to="/connecte"><User className="h-6 w-6 group-hover:scale-110 transition-transform" /></StyledNavLink>
 
           {/* Panier */}
-          <Button
+         <div className="hidden md:flex justify-center items-center gap-8">
+           <Button
             variant="ghost"
             size="icon"
             asChild
@@ -52,6 +52,8 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
               )}
             </StyledNavLink>
           </Button>
+          <ModeToggle/>
+         </div>
 
           {/* Menu mobile */}
           <Sheet>
@@ -63,18 +65,17 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
             <SheetContent side="right" className="w-[300px] p-4">
               <SheetHeader className="mb-6 p-0">
                 <SheetTitle className="flex items-center gap-2 ">
-                  <Link
+                  <StyledNavLink
                     to="/"
-                    className="flex items-center gap-2 text-xl font-bold tracking-tight hover:text-primary transition-colors group"
                   >
-                    <Store className="h-6 w-6 group-hover:scale-110 transition-transform" />
+                      <Store className="h-6 w-6 group-hover:scale-110 transition-transform" />
                     <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">E-Shop</span>
-                  </Link>
+                   
+                  </StyledNavLink>
                 </SheetTitle>
               </SheetHeader>
 
               <nav className="flex flex-col space-y-4">
-                <StyledNavLink to="/">Accueil</StyledNavLink>
                 <StyledNavLink to="/product">Produits</StyledNavLink>
                 <StyledNavLink to="/orders">Commandes</StyledNavLink>
 
@@ -104,6 +105,7 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
                        </div> 
                        </StyledNavLink>
                 </Button>
+                <ModeToggle/>
               </nav>
             </SheetContent>
           </Sheet>

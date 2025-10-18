@@ -1,59 +1,42 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Star, Heart, Share2, ShoppingCart, Minus, Plus, Truck, Shield, RotateCcw } from "lucide-react"
-import { useParams } from "react-router-dom"
+import { useLoaderData} from "react-router-dom"
 import fetchData from "@/lib/fetchData"
 import { useStore } from "../store/store"
 // cartItem id name price quantite
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  similarImages: string[];
-  description?: string;
-  category?: string;
+interface ProductType{
+  id:number,
+  name:string
+  price:number
+  image:string
+  similarImages:Array<string>
+  description:string
+  category:'Ordinateurs'|'Claviers'|'Casques'|'Casques'|'Bluetooth'
 }
-
-
-
+type product={
+  products:ProductType[]
+}
+export async function dataFromLoader(id:string) {
+  return await fetchData<product>(`/api/products/${id}`);
+}
 export function ProductDetailPage() {
-  const { id } = useParams()
+ 
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
-  const [loader, setLoader] = useState(true)
-  const [productDetail, setProductDetail] = useState<Product>({} as Product);
   const [selectedSize, setSelectedSize] = useState("M")
   const [isWishlisted, setIsWishlisted] = useState(false)
-
+  const dataFromLoader=useLoaderData().product as ProductType
   const { addToCart } = useStore()
-
+  
   const sizes = ["S", "M", "L", "XL"]
   function handleClickAddCart() {
-    addToCart({ ...productDetail }, quantity)
+    addToCart({ ...dataFromLoader }, quantity)
     setQuantity(1)
-
   }
-
-
-  useEffect(() => {
-    const dataProduct = async () => {
-      const product = await fetchData(`/api/products/${id}`)
-      setProductDetail(product)
-      setLoader(false)
-    };
-
-    dataProduct()
-
-  }, []);
-
-  if (loader) {
-    return <div>Loading...</div>
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -62,13 +45,13 @@ export function ProductDetailPage() {
           <div className="space-y-4">
             <div className="aspect-square overflow-hidden rounded-lg bg-muted">
               <img
-                src={productDetail?.similarImages[selectedImage] || "/placeholder.svg"}// image 1 image 2 image 3 image4 productImages[selectedImage]
+                src={dataFromLoader?.similarImages[selectedImage] || "/placeholder.svg"}// image 1 image 2 image 3 image4 productImages[selectedImage]
                 alt="Casque Audio Premium"
                 className="h-full w-full object-cover transition-transform hover:scale-105"
               />
             </div>
             <div className="grid grid-cols-4 gap-4">
-              {productDetail?.similarImages.map((image, index) => (
+              {dataFromLoader.similarImages.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}// permet de charger les image 1 2 3 4
@@ -89,11 +72,11 @@ export function ProductDetailPage() {
           <div className="space-y-6">
             <div>
               <Badge variant="secondary" className="mb-2">
-                {productDetail.category}
+                {dataFromLoader.category}
               </Badge>
-              <h1 className="text-3xl font-bold text-balance"> {productDetail.name} </h1>
+              <h1 className="text-3xl font-bold text-balance"> {dataFromLoader.name} </h1>
               <p className="text-lg text-muted-foreground mt-2">
-                {productDetail.description}
+                {dataFromLoader.description}
               </p>
             </div>
 

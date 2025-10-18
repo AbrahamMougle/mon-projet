@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom"
 import { cn } from "@/lib/utils" 
 import { ReactNode } from "react";
 
-export function StyledNavLink({ to, children }: { to: string; children:ReactNode }) {
+export function StyledNavLink({ to, children,...props}: { to: string; children:ReactNode}) {
   return (
     <NavLink
       to={to}

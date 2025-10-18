@@ -21,15 +21,10 @@ export const createCartSlice: StateCreator<
   cart: [],
 
   addToCart: (item, qty = 1) =>
-    set(() => {
-      
-      return { cart: [...get().cart, { ...item, quantity: qty }] };
-    }, false),
+    set({cart: [...get().cart, { ...item, quantity: qty }]}),
 
   removeFromCart: (id) =>
-    set((state) => ({
-      cart: state.cart.filter((p) => p.id !== id),
-    }), false),
+    set({ cart: get().cart.filter((p) => p.id !== id) }),
 
   clearCart: () => set(() => ({ cart: [] }), false),//pas encore utiliser 
 
@@ -38,3 +33,4 @@ export const createCartSlice: StateCreator<
     return state.cart.reduce((sum, p) => sum + p.price * p.quantity, 0);
   },
 });
+// (state) => ({cart: state.cart.filter((p) => p.id !== id)
