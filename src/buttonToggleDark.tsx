@@ -6,10 +6,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useTheme } from "./darkMode"
+import { useStore } from "./store/store"
 
 export function ModeToggle() {
-  const { setTheme } = useTheme()
+  const { setTheme } = useStore()
 
   return (
     <DropdownMenu>
