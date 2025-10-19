@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Menu, ShoppingCart, Store ,User} from "lucide-react"
+import { Menu, ShoppingCart, Store, User } from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -20,7 +20,7 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
           to="/"
         >
           <Store className="h-6 w-6 group-hover:scale-110 transition-transform" />
-          
+
         </StyledNavLink>
         {/* Liens Desktop */}
         <div className="hidden md:flex justify-center items-center gap-3 text-sm font-medium">
@@ -30,30 +30,30 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
         {/* Icônes & Menu Mobile */}
         <div className="flex items-center justify-center gap-8">
 
-        <StyledNavLink to="/connecte"><User className="h-6 w-6 group-hover:scale-110 transition-transform" /></StyledNavLink>
+          <StyledNavLink to="/connecte"><User className="h-6 w-6 group-hover:scale-110 transition-transform" /></StyledNavLink>
 
           {/* Panier */}
-         <div className="hidden md:flex justify-center items-center gap-8">
-           <Button
-            variant="ghost"
-            size="icon"
-            asChild
-            className="relative hover:bg-accent"
-            aria-label={`Panier avec ${cartItemsCount} article${cartItemsCount > 1 ? "s" : ""}`}
-          >
-            <StyledNavLink to="/panier">
-              <ShoppingCart className="h-6 w-6" />
-              {cartItemsCount > 0 && (
-                <Badge
-                  className=" absolute top-4  h-4 w-4 flex items-center justify-center p-0 text-xs"
-                >
-                  {cartItemsCount > 9 ? "9+" : cartItemsCount}
-                </Badge>
-              )}
-            </StyledNavLink>
-          </Button>
-          <ModeToggle/>
-         </div>
+          <div className="hidden md:flex justify-center items-center gap-8">
+            <Button
+              variant="ghost"
+              size="icon"
+              asChild
+              className="relative hover:bg-accent"
+              aria-label={`Panier avec ${cartItemsCount} article${cartItemsCount > 1 ? "s" : ""}`}
+            >
+              <StyledNavLink to="/panier">
+                <ShoppingCart className="h-6 w-6" />
+                {cartItemsCount > 0 && (
+                  <Badge
+                    className=" absolute top-4  h-4 w-4 flex items-center justify-center p-0 text-xs"
+                  >
+                    {cartItemsCount > 9 ? "9+" : cartItemsCount}
+                  </Badge>
+                )}
+              </StyledNavLink>
+            </Button>
+            <ModeToggle />
+          </div>
 
           {/* Menu mobile */}
           <Sheet>
@@ -68,9 +68,9 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
                   <StyledNavLink
                     to="/"
                   >
-                      <Store className="h-6 w-6 group-hover:scale-110 transition-transform" />
+                    <Store className="h-6 w-6 group-hover:scale-110 transition-transform" />
                     <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">E-Shop</span>
-                   
+
                   </StyledNavLink>
                 </SheetTitle>
               </SheetHeader>
@@ -88,24 +88,24 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
                     `Panier avec  ${cartItemsCount} article${cartItemsCount > 1 ? "s" : ""}}`
                   }
                 >
-                  <StyledNavLink to="/panier"> 
-                  <div className="flex  items-center relative">
-                     
-                     <div>
-                       <ShoppingCart className="h-5 w-5" /> 
-                       {cartItemsCount > 0 && 
-                       (<Badge
-                  
-                  className="absolute -top-4 left-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
-                >
-                  {cartItemsCount > 9 ? "9+" : cartItemsCount}
-                </Badge>)}
-                        </div> 
-                        <div className="pl-2">Panier</div> 
-                       </div> 
-                       </StyledNavLink>
+                  <StyledNavLink to="/panier">
+                    <div className="flex  items-center relative">
+
+                      <div>
+                        <ShoppingCart className="h-5 w-5" />
+                        {cartItemsCount > 0 &&
+                          (<Badge
+
+                            className="absolute -top-4 left-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                          >
+                            {cartItemsCount > 9 ? "9+" : cartItemsCount}
+                          </Badge>)}
+                      </div>
+                      <div className="pl-2">Panier</div>
+                    </div>
+                  </StyledNavLink>
                 </Button>
-                <ModeToggle/>
+                <ModeToggle />
               </nav>
             </SheetContent>
           </Sheet>

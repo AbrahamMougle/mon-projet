@@ -4,34 +4,52 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Star, Heart, Share2, ShoppingCart, Minus, Plus, Truck, Shield, RotateCcw } from "lucide-react"
-import { useLoaderData} from "react-router-dom"
+import { useLoaderData } from "react-router-dom"
 import fetchData from "@/lib/fetchData"
 import { useStore } from "../store/store"
+import { features } from "process"
 // cartItem id name price quantite
-interface ProductType{
-  id:number,
-  name:string
-  price:number
-  image:string
-  similarImages:Array<string>
-  description:string
-  category:'Ordinateurs'|'Claviers'|'Casques'|'Casques'|'Bluetooth'
+interface ProductType {
+  id: number,
+  name: string
+  price: number
+  image: string
+  similarImages: Array<string>
+  description: string
+  category: 'Ordinateurs' | 'Claviers' | 'Casques' | 'Casques' | 'Bluetooth'
 }
-type product={
-  products:ProductType[]
+type feature = {
+  text: string,
+  node: React.ReactNode
 }
-export async function dataFromLoader(id:string) {
+type product = {
+  products: ProductType[]
+}
+
+function Features({ node, text }: feature) {
+  return <div className="flex items-center space-x-3">
+    {node}
+    <span className="text-sm"> {text} </span>
+  </div>
+
+}
+export async function dataFromLoader(id: string = "") {
   return await fetchData<product>(`/api/products/${id}`);
 }
 export function ProductDetailPage() {
- 
+
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [selectedSize, setSelectedSize] = useState("M")
   const [isWishlisted, setIsWishlisted] = useState(false)
-  const dataFromLoader=useLoaderData().product as ProductType
+  const dataFromLoader = useLoaderData().product as ProductType
   const { addToCart } = useStore()
-  
+  const tabfeature: feature[] = [
+    { text: 'Livraison a domile', node: <Truck className="h-5 w-5 text-primary" /> },
+    { text: 'Garantir 2 ans', node: <Shield className="h-5 w-5 text-primary" /> },
+    { text: "Retour gratuit 30 jours", node: <RotateCcw className="h-5 w-5 text-primary" /> }
+  ]
+
   const sizes = ["S", "M", "L", "XL"]
   function handleClickAddCart() {
     addToCart({ ...dataFromLoader }, quantity)
@@ -155,18 +173,9 @@ export function ProductDetailPage() {
             <div className="space-y-4">
               <Separator />
               <div className="grid grid-cols-1 gap-4">
-                <div className="flex items-center space-x-3">
-                  <Truck className="h-5 w-5 text-primary" />
-                  <span className="text-sm">Livraison gratuite sous 48h</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Shield className="h-5 w-5 text-primary" />
-                  <span className="text-sm">Garantie 2 ans</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <RotateCcw className="h-5 w-5 text-primary" />
-                  <span className="text-sm">Retour gratuit 30 jours</span>
-                </div>
+                {
+                  tabfeature.map((feature) => <Features {...feature} />)
+                }
               </div>
             </div>
           </div>

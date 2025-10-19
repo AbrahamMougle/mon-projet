@@ -7,7 +7,7 @@ import { useNavigation } from "react-router-dom"
 import { cn } from "@/lib/utils"
 export function LoginForm() {
     const { state } = useNavigation()
-    
+
     return (
         <div className="flex items-center justify-center bg-background px-4 py-12">
             <div className="w-full max-w-md">
@@ -51,7 +51,7 @@ export function LoginForm() {
                             disabled={state === "submitting"}
                             className={cn("w-full", state === "submitting" && "opacity-50 cursor-not-allowed")}
                             size="lg"
-                            
+
                         >
                             Connecter
                         </Button>

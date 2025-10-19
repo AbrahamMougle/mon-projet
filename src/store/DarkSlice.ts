@@ -8,10 +8,9 @@ type Theme = "dark" | "light" | "system"
 }
 
 export const useThemeStore :StateCreator<ThemeSliceState>=((set, get, api) => ({
-  theme: (localStorage.getItem("theme") as Theme) || "system",
+  theme: "system",
 
   setTheme: (theme) => {
-    localStorage.setItem("theme", theme)
     set({ theme })
   },
 }))
