@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+
 import { Menu, ShoppingCart, Store, User } from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
