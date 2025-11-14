@@ -20,7 +20,7 @@ export const useStore = create<Store>()(
         ...useThemeStore(set, get, api),
       
       }),
-      { name: "ecommerce-cart" } // clé localStorage
+      { name: "ecommerce-cart" } // clé du localStorage
     )
   )
 );

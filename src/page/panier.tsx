@@ -15,7 +15,7 @@ export default function CartPage() {
   const { cart, clearCart, cartTotal, createOrder, removeFromCart } = useStore()
 
   const handleCreateOrder = () => {
-    
+
     const fakeUser = {
       id: "u1",
       name: "Abraham",
@@ -34,7 +34,7 @@ export default function CartPage() {
         <p className="text-gray-500 text-lg">Votre panier est vide.</p>
       </div>
     )
-// dans les cas contraire  
+  // dans les cas contraire  
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">🛒 Votre panier</h1>
@@ -71,12 +71,19 @@ export default function CartPage() {
         <p className="text-xl font-semibold">
           Total : <span className="text-foreground">{cartTotal().toFixed(2)} €</span>
         </p>
+        <div className="flex justify-between">
+          <Button variant='destructive'
+            onClick={clearCart}
+          >
+            vider le panier
+          </Button>
+          <Button
+            onClick={handleCreateOrder}
+          >
+            Passer la commande
+          </Button>
 
-        <Button
-          onClick={handleCreateOrder}
-        >
-          Passer la commande
-        </Button>
+        </div>
       </div>
     </div>
   )

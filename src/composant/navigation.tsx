@@ -83,7 +83,7 @@ export default function Navigation({ cartItemsCount = 0 }: NavigationProps) {
                   variant="ghost"
                   size="sm"
                   asChild
-                  className="relative justify-start hover:bg-accent mt-4"
+                  className="relative justify-start  mt-4"
                   aria-label={
                     `Panier avec  ${cartItemsCount} article${cartItemsCount > 1 ? "s" : ""}}`
                   }

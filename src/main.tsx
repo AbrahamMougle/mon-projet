@@ -5,11 +5,11 @@ import App from './App'
 import { ThemeEffect } from './ThemeEffect'
 import { makeServer } from './Api/server'
 import { Toaster } from "@/components/ui/sonner"
-makeServer();
-createRoot(document.getElementById('root')!).render(  
+
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeEffect />
-    <App />  
-   <Toaster position="top-left" richColors />
+    <App />
+    <Toaster position="top-left" richColors />
   </StrictMode>,
 )

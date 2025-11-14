@@ -1,20 +1,21 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Star, Heart, Share2, ShoppingCart, Minus, Plus, Truck, Shield, RotateCcw } from "lucide-react"
-import { useLoaderData } from "react-router-dom"
-import fetchData from "@/lib/fetchData"
+import { useLoaderData, useParams } from "react-router-dom"
+
 import { useStore } from "../store/store"
-import { features } from "process"
+import { supabase } from "@/supabaseClient"
+
 // cartItem id name price quantite
 interface ProductType {
   id: number,
   name: string
   price: number
   image: string
-  similarImages: Array<string>
+  similarimages: Array<string>
   description: string
   category: 'Ordinateurs' | 'Claviers' | 'Casques' | 'Casques' | 'Bluetooth'
 }
@@ -33,16 +34,29 @@ function Features({ node, text }: feature) {
   </div>
 
 }
-export async function dataFromLoader(id: string = "") {
-  return await fetchData<product>(`/api/products/${id}`);
+
+
+export async function getProductById(id: string | undefined) {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("id", id)
+    .single(); // garantit un seul résultat
+
+  if (error) throw error;
+  return data
 }
+
 export function ProductDetailPage() {
 
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
+
   const [selectedSize, setSelectedSize] = useState("M")
   const [isWishlisted, setIsWishlisted] = useState(false)
-  const dataFromLoader = useLoaderData().product as ProductType
+  const { id } = useParams()
+  const data = useLoaderData() as ProductType
+  console.log(data)
   const { addToCart } = useStore()
   const tabfeature: feature[] = [
     { text: 'Livraison a domile', node: <Truck className="h-5 w-5 text-primary" /> },
@@ -52,9 +66,10 @@ export function ProductDetailPage() {
 
   const sizes = ["S", "M", "L", "XL"]
   function handleClickAddCart() {
-    addToCart({ ...dataFromLoader }, quantity)
+    addToCart({ ...data }, quantity)
     setQuantity(1)
   }
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -63,13 +78,13 @@ export function ProductDetailPage() {
           <div className="space-y-4">
             <div className="aspect-square overflow-hidden rounded-lg bg-muted">
               <img
-                src={dataFromLoader?.similarImages[selectedImage] || "/placeholder.svg"}// image 1 image 2 image 3 image4 productImages[selectedImage]
+                src={data?.similarimages[selectedImage] || "/placeholder.svg"}// image 1 image 2 image 3 image4 productImages[selectedImage]
                 alt="Casque Audio Premium"
                 className="h-full w-full object-cover transition-transform hover:scale-105"
               />
             </div>
             <div className="grid grid-cols-4 gap-4">
-              {dataFromLoader.similarImages.map((image, index) => (
+              {data?.similarimages.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}// permet de charger les image 1 2 3 4
@@ -90,11 +105,11 @@ export function ProductDetailPage() {
           <div className="space-y-6">
             <div>
               <Badge variant="secondary" className="mb-2">
-                {dataFromLoader.category}
+                {data?.category}
               </Badge>
-              <h1 className="text-3xl font-bold text-balance"> {dataFromLoader.name} </h1>
+              <h1 className="text-3xl font-bold text-balance"> {data?.name} </h1>
               <p className="text-lg text-muted-foreground mt-2">
-                {dataFromLoader.description}
+                {data?.description}
               </p>
             </div>
 
@@ -159,7 +174,7 @@ export function ProductDetailPage() {
                   className="flex-1 bg-transparent"
                   onClick={() => setIsWishlisted(!isWishlisted)}
                 >
-                  <Heart className={`mr-2 h-5 w-5 ${isWishlisted ? "fill-current" : ""}`} />
+                  <Heart className={`mr-2 h-5 w-5 ${isWishlisted ? "fill-destructive border-white" : ""}`} />
                   Favoris
                 </Button>
                 <Button variant="outline" size="lg" className="flex-1 bg-transparent">
