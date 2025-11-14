@@ -4,14 +4,15 @@ import { Label } from "@/components/ui/label";
 import { Link, Form, useActionData, useNavigation, redirect } from "react-router-dom";
 import { supabase } from "@/supabaseClient";
 import { cn } from "@/lib/utils";
+import type { ActionFunctionArgs } from "react-router-dom";
 
-export async function action({ request }) {
+export async function action({ request }: ActionFunctionArgs) {
     console.log(request);
 
     const formData = await request.formData();
     const name = formData.get("name");
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     // 1️⃣ Création utilisateur Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signUp({

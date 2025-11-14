@@ -3,12 +3,13 @@ import { supabase } from "@/supabaseClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { ActionFunctionArgs } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
-export async function loginAction({ request }) {
+export async function loginAction({ request }: ActionFunctionArgs) {
     const formData = await request.formData();
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
 
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
